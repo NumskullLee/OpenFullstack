@@ -11,22 +11,36 @@ const Button = (props) =>{
 
 const App=()=> {
   
-  const [good,setGood]=useState(0)
-  const [neutral,setNeutral]=useState(0)
-  const [bad,setBad]=useState(0)
+  const [good,setGood]=useState(0);
+  const [neutral,setNeutral]=useState(0);
+  const [bad,setBad]=useState(0);
+  const [total,setTotal]=useState(0);
+  const [average,setAverage]=useState(0);
+  const [positive,setPositive]=useState(0);
 
 
   const goodClick=()=>{
     const counter=good+1;
+    const total=counter+neutral+bad;
     setGood(counter);
+    setTotal(total);
+    setAverage((counter-bad)/total);
+    setPositive((counter/total)*100)
   }
   const neutralClick=()=>{
     const counter=neutral+1;
+    const total=good+counter+bad;
     setNeutral(counter);
+    setTotal(total);
+    setPositive((good/total)*100)
   }
   const badClick=()=>{
     const counter=bad+1;
+    const total=good+neutral+counter;
     setBad(counter);
+    setTotal(total);
+    setAverage((good-counter)/total)
+    setPositive((good/total)*100)
   }
 
   return (
@@ -40,6 +54,9 @@ const App=()=> {
         <p>{good}</p>
         <p>{neutral}</p>
         <p>{bad}</p>
+        <p>{total}</p>
+        <p>{average}</p>
+        <p>{positive} %</p>
          
        </div>
     </>
