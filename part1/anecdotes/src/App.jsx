@@ -3,6 +3,58 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
+
+
+const Button = ({e, text})=>{
+  return(
+    <>
+      <button onClick={e}>{text}</button>
+    </>
+  )
+}
+
+const AnecdoteRender = ({text}) => {
+  
+  return(
+    <div>
+      <h2>{text}</h2>
+    </div>
+  )
+  
+}
+
+const Seccion1=(props)=>{
+  return(
+
+  <div>
+    <Title text="Anecdote of the day"/>
+    <AnecdoteRender text={props.anecdo} visible={true}/>
+    <Votes total={props.total}/>
+    <Button e={props.random} text="next anecdote"/>
+    <Button e={props.vote} text="vote"/>
+    </div>
+  )
+  
+}
+
+const Seccion2=(props)=>{
+  if(props.visible===true){
+    return(
+    <>
+        <Title text="Anecdote with most votes"/>
+        <AnecdoteRender text={props.text}/>
+        <Votes total={props.total}/>
+    </>
+    )
+  }else{
+    return(<></>)
+  }
+}
+
+const Votes =(props)=> <h3>has {props.total} votes</h3>;
+
+const Title = (props)=> <h1>{props.text}</h1>
+
 const App = () => {
   const anecdotes = [
     'If it hurts, do it more often.',//0
@@ -15,28 +67,39 @@ const App = () => {
     'The only way to go fast, is to go well.'//7
   ]
    
-  const [selected, setSelected] = useState(0)
-  const [points,setPoints] = useState({ 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0})
+  const [selected, setSelected] = useState(0);
+  const [points,setPoints] = useState({ 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0});
+  const [maxValue,setMaxValue] = useState(0);
+  const [visible, setVisible]=useState(false);
 
   const random =()=> {
     var x=Math.floor(Math.random() * (anecdotes.length));//here was like  var x=Math.floor(Math.random() * (anecdotes.length-1)) but i can't reach the last anecdote from the array
     setSelected(x);
-    console.log(points)
+
   }
 
   const vote =()=>{
+    console.log(visible)
+    setVisible(true);
     const copy = {...points}
     copy[selected]+=1;
     setPoints(copy)
+    if(copy[selected]>copy[maxValue]){
+      
+      setMaxValue(selected);
+    }
+    
   }
+
+
   
   return (
     <div>
-      <h1>{anecdotes[selected]}</h1>
-      <button onClick={random}>next anecdote</button>
-      <button onClick={vote}>vote</button>
-      <h2>has {points[selected]} votes</h2>
+      <Seccion1 anecdo={anecdotes[selected]} total={points[selected]} random={random} vote={vote}  />
+      <Seccion2 total={points[maxValue]} text={anecdotes[maxValue]} visible={visible}/>
     </div>
   )
 }
+
+
 export default App
