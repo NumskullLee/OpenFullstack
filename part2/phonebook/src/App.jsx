@@ -1,5 +1,7 @@
 import { useState } from 'react'
-
+import Persons from './components/Persons';
+import Filter from './components/Filter';
+import PersonasForms from './components/PersonForms';
 
 const App = () => {
  
@@ -21,12 +23,10 @@ const App = () => {
   const inputEventPhone=(event)=>{
     setNewPhone(event.target.value);
   }
-
   const inputEventFilter=(event)=>{
-    setNewFilter(event.target.value);
-    
+    setNewFilter(event.target.value); 
   }
-
+ 
   const addNewName=(event)=>{
     event.preventDefault();
     
@@ -45,37 +45,21 @@ const App = () => {
     setPersons(persons.concat(newObj));
     setNewName('');
     setNewPhone('');
-    console.log(persons)
+
     }
   }
-
-
-
 
   return (
     <>
       <div>
       <h2>Phonebook</h2>
-      <div>
-        filter shown with <input onChange={inputEventFilter} value={filter}/>
-      </div>
+      <Filter inputEventFilter={inputEventFilter} filter={filter}/>
       <h3>Add new</h3>
-      <form onSubmit={addNewName}>
-          <div>
-            name: <input onChange={inputEventName} value={newName}/>
-          </div>
-          <div>
-            number: <input onChange={inputEventPhone} value={newPhone}/>
-          </div>
-          <div>
-            <button type='submit'>add</button>
-          </div>
-      </form>
-      </div>
+      <PersonasForms evtSubmit={addNewName} evtName={inputEventName} vname={newName} evtnumber={inputEventPhone} vnumber={newPhone}/>
       <h3>Numbers</h3>
-      <ul>
-        {persons.filter(person=> person.name.includes(filter) || person.number.includes(filter)).map(person=><li key={person.id}>{person.name} {person.number}</li>)}
-      </ul>
+      <Persons persons={persons} filter={filter}/>
+      </div>
+      
     </>
   )
 }
