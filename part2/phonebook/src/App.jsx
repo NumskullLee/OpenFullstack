@@ -14,13 +14,21 @@ const App = () => {
 
   const addNewName=(event)=>{
     event.preventDefault();
+    
+    const band=persons.some(person=> {
+      return person.name == newName;
+    });
+    
+    if(band){
+      alert(newName+' is already add to phonebook')
+    }else{
     const newObj = {
         name:newName
     };
     setPersons(persons.concat(newObj));
     setNewName('');
+    }
   }
-
   return (
     <>
       <div>
